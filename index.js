@@ -1,5 +1,3 @@
-//cotinuar 42:00 min
-
 const form = document.createElement('form');
 const inputActivity = document.createElement('input');
 const inputActivityDate = document.createElement('input');
@@ -9,11 +7,13 @@ const submitButton = document.createElement('button');
 inputActivity.id = 'input-activity';
 inputActivity.type = 'text';
 inputActivity.placeholder = 'Inform the activity';
+inputActivity.required = true;
 
 inputActivityDate.id = 'input-date';
 inputActivityDate.type = 'date';
+inputActivityDate.required = true;
 
-const arrayOptions = ['Baixa', 'Normal', 'Alta', 'Altíssima'];
+const arrayOptions = ['Low', 'Normal', 'High', 'Very High'];
 
 selectTagPriority.id = 'select-tag-priority';
 arrayOptions.forEach(element => {
@@ -22,14 +22,21 @@ arrayOptions.forEach(element => {
     selectTagPriority.appendChild(optionTagPriority);
 });
 
-submitButton.addEventListener('click', function(e) {
+submitButton.addEventListener('click', function (e) {
     e.preventDefault();
     const inputActivityValue = inputActivity.value;
     const inputActivityDateValue = inputActivityDate.value;
     const selectTagPriorityValue = selectTagPriority.value;
-    console.log(inputActivityValue, inputActivityDateValue, selectTagPriorityValue);
+    const formIsFilled = inputActivityValue != 0 && inputActivityDateValue != 0 && selectTagPriorityValue != 0;
+    if (formIsFilled) {
+        const newActivity = new ToDo(inputActivityValue, inputActivityDateValue, selectTagPriorityValue);
+        toDoList.push(newActivity);
+    } else {
+        alert('Fill out all the fields!');
+    }
 });
-submitButton.textContent = 'Adicionar';
+
+submitButton.textContent = 'Add';
 submitButton.type = 'submit';
 
 form.appendChild(inputActivity);
@@ -40,36 +47,17 @@ form.appendChild(submitButton);
 const divNewActivity = document.querySelector('.new-activity');
 divNewActivity.append(form);
 
-class ToDoList {
-    listOfToDos = [];
+const toDoList = [];
 
-    addToDo(toDo) {
-        this.listOfToDos.push(toDo);
+class ToDo {
+    description;
+    date;
+    priority;
+    concluded = false;
+    constructor(description, date, priority, concluded) {
+        this.description = description,
+        this.date = date,
+        this.priority = priority,
+        this.concluded
     }
-
-    deleToDo(id) {
-        for (let i = 0; i < listOfToDos.length; i++) {
-            const e = listOfToDos[i];
-            if(e.id === id){
-            this.listOfToDos.pop(e);
-            }
-        }
-    }
-
-    editToDo(id, editedToDo) {
-        for (let i = 0; i < listOfToDos.length; i++) {
-            const e = listOfToDos[i];
-            if (e.id === id) {
-                this.listOfToDos.replace(e, editedToDo);
-            }
-        }
-    }
-}
-
-class ToDoModel {
-   id;
-   description;
-   date;
-   priority;
-   concluded = false;
 }
