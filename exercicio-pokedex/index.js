@@ -30,6 +30,11 @@ async function fetchPokemons() {
     return pokemons.results;
 }
 
+async function fetchPokemonData(url) {
+    const response = await fetch(url);
+    return await response.json();
+}
+
 async function displayPokemons(pokemons) {
     container.innerHTML = "";
     for (const pokemon of pokemons) {
@@ -37,11 +42,6 @@ async function displayPokemons(pokemons) {
         const pokemonCard = createPokemonCard(pokemonData);
         container.appendChild(pokemonCard);
     }
-}
-
-async function fetchPokemonData(url) {
-    const response = await fetch(url);
-    return await response.json();
 }
 
 function createPokemonCard(pokemonData) {
