@@ -3,6 +3,27 @@ const container = document.querySelector(".container");
 const searchInput = document.querySelector("#search-input");
 const searchButton = document.querySelector("#search-button");
 
+const colours = {
+    normal: '#A8A77A',
+    fire: '#EE8130',
+    water: '#6390F0',
+    electric: '#F7D02C',
+    grass: '#7AC74C',
+    ice: '#96D9D6',
+    fighting: '#C22E28',
+    poison: '#A33EA1',
+    ground: '#E2BF65',
+    flying: '#A98FF3',
+    psychic: '#F95587',
+    bug: '#A6B91A',
+    rock: '#B6A136',
+    ghost: '#735797',
+    dragon: '#6F35FC',
+    dark: '#705746',
+    steel: '#B7B7CE',
+    fairy: '#D685AD',
+};
+
 async function fetchPokemons() {
     const response = await fetch(API_URL);
     const pokemons = await response.json();
@@ -42,14 +63,30 @@ function createPokemonCard(pokemonData) {
     pokemonNumber.classList.add("pokemon-number");
     pokemonCard.appendChild(pokemonNumber);
 
-    const pokemonType = document.createElement("div");
     if (pokemonData.types.length > 1) {
-        pokemonType.textContent = "Type: " + pokemonData.types[0].type.name + " " + pokemonData.types[1].type.name;
+        const pokemonTypeDiv = document.createElement("div");
+        pokemonTypeDiv.classList.add("pokemon-type-div");
+        pokemonCard.appendChild(pokemonTypeDiv);
+        const pokemonType = document.createElement("div");
+        const typeColor = colours[pokemonData.types[0].type.name.toLowerCase()];
+        pokemonType.textContent = pokemonData.types[0].type.name;
+        pokemonType.classList.add("pokemon-type");
+        pokemonTypeDiv.appendChild(pokemonType);
+        pokemonType.style.backgroundColor = typeColor;
+        const pokemonType2 = document.createElement("div");
+        const typeColor2 = colours[pokemonData.types[1].type.name.toLowerCase()];
+        pokemonType2.textContent = pokemonData.types[1].type.name;
+        pokemonType2.classList.add("pokemon-type2");
+        pokemonTypeDiv.appendChild(pokemonType2);
+        pokemonType2.style.backgroundColor = typeColor2;
     } else {
-        pokemonType.textContent = "Type: " + pokemonData.types[0].type.name;
+        const pokemonType = document.createElement("div");
+        const typeColor = colours[pokemonData.types[0].type.name.toLowerCase()];
+        pokemonType.textContent = pokemonData.types[0].type.name;
+        pokemonType.classList.add("pokemon-type");
+        pokemonCard.appendChild(pokemonType);
+        pokemonType.style.backgroundColor = typeColor;
     }
-    pokemonType.classList.add("pokemon-type");
-    pokemonCard.appendChild(pokemonType);
 
     const pokemonHeight = document.createElement("div");
     pokemonHeight.textContent = "Height: " + pokemonData.height;
